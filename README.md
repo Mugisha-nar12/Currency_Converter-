@@ -1,32 +1,39 @@
-# Currency_Converter-
-A web app that lets users (a) convert between currencies, (b) see live exchange rates, and (c) track stock/currency movements.
+# Currency Converter
 
-# UI design link:
-https://www.figma.com/design/Sq5Jm8IR33ME5Ld1HSOwd8/currency-converter?node-id=2-835&t=cA7Ce5vlSttxiZPD-1
+This is a simple currency converter application built with React. It allows you to convert between different currencies using real-time exchange rates.
 
-# Tech stack:
+## How it Works
 
-Frontend: React.js + Tailwind CSS
-Deployment: Netlify / Vercel / GitHub Pages
+The application fetches the latest exchange rates from a free API and uses them to perform the currency conversions. You can select the base currency and the target currency, and the application will instantly show you the converted amount.
 
-# Architecture & Layers
+## Technologies Used
 
-Think in layers/components:
+*   **React:** A JavaScript library for building user interfaces.
+*   **Tailwind CSS:** A utility-first CSS framework for rapid UI development.
+*   **Font Awesome:** A popular icon set and toolkit.
 
-UI Layer (Frontend)
+## Getting Started
 
-Built with React components styled with Tailwind CSS.
+To get a local copy up and running, follow these simple steps.
 
-Components: Navbar, Converter Form, Exchange Rate Table, Chart/Graph, Footer.
+### Prerequisites
 
-Business Logic Layer
+*   npm
+    ```sh
+    npm install npm@latest -g
+    ```
 
-Currency conversion logic.
+### Installation
 
-Data formatting (numbers, symbols, date/time).
-
-Data Layer (API Integration)
-
-Fetch exchange rates via API.
-
-Handle caching/local storage for performance.
+1.  Clone the repo
+    ```sh
+    git clone https://github.com/your_username_/Project-Name.git
+    ```
+2.  Install NPM packages
+    ```sh
+    npm install
+    ```
+3.  Run the app
+    ```sh
+    npm run dev
+    ```
