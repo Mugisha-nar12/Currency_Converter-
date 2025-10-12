@@ -1,4 +1,3 @@
-// src/Footer.jsx
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -19,7 +18,6 @@ function Footer({ symbols }) {
   return (
     <footer className="bg-gray-950 text-white py-12 px-8 font-sans">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 mb-8">
-        {/* Brand/Description Section */}
         <div className="flex flex-col space-y-4">
           <div className="flex items-center text-2xl font-bold text-teal-600">
             <FontAwesomeIcon icon={faExchangeAlt} className="mr-3" />
@@ -35,7 +33,6 @@ function Footer({ symbols }) {
           </div>
         </div>
 
-        {/* Features Section */}
         <div className="flex flex-col space-y-4">
           <h3 className="text-xl font-semibold text-teal-600 mb-2">Features</h3>
           <ul className="space-y-3">
@@ -74,7 +71,6 @@ function Footer({ symbols }) {
           </ul>
         </div>
 
-        {/* Currencies Section */}
         <div className="flex flex-col space-y-4">
           <h3 className="text-xl font-semibold text-teal-600 mb-2">
             Currencies
@@ -110,7 +106,6 @@ function Footer({ symbols }) {
         </div>
       </div>
 
-      {/* Copyright Section */}
       <div className="container mx-auto border-t border-gray-700 pt-8 mt-8 text-center text-gray-400 text-sm">
         <p>
           &copy; {new Date().getFullYear()}, Currency converter made by Mugisha

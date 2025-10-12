@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react"; // Import useCallback
+import React, { useState, useEffect, useCallback } from "react";
 
-// Hardcoded currency data with example exchange rates relative to USD
-// This should ideally come from a shared context or API in a real app
 const currencies = [
   { code: "USD", name: "US Dollar", symbol: "$", rateToUSD: 1 },
-  { code: "EUR", name: "Euro", symbol: "€", rateToUSD: 1.08 }, // 1 EUR = 1.08 USD
+  { code: "EUR", name: "Euro", symbol: "€", rateToUSD: 1.08 },
   { code: "GBP", name: "British Pound", symbol: "£", rateToUSD: 1.26 },
   { code: "JPY", name: "Japanese Yen", symbol: "¥", rateToUSD: 0.0067 },
   { code: "CAD", name: "Canadian Dollar", symbol: "C$", rateToUSD: 0.73 },
@@ -13,20 +11,20 @@ const currencies = [
   { code: "CNY", name: "Chinese Yuan", symbol: "¥", rateToUSD: 0.14 },
   { code: "INR", name: "Indian Rupee", symbol: "₹", rateToUSD: 0.012 },
   { code: "BRL", name: "Brazilian Real", symbol: "R$", rateToUSD: 0.2 },
-  { code: "ZAR", name: "South African Rand", symbol: "R", rateToUSD: 0.053 }, // African
-  { code: "NGN", name: "Nigerian Naira", symbol: "₦", rateToUSD: 0.00067 }, // African
-  { code: "KES", name: "Kenyan Shilling", symbol: "KSh", rateToUSD: 0.0076 }, // African
-  { code: "GHS", name: "Ghanaian Cedi", symbol: "GH₵", rateToUSD: 0.083 }, // African
-  { code: "EGP", name: "Egyptian Pound", symbol: "E£", rateToUSD: 0.021 }, // African
-  { code: "XOF", name: "CFA Franc BCEAO", symbol: "FCFA", rateToUSD: 0.0016 }, // African (West Africa)
-  { code: "XAF", name: "CFA Franc BEAC", symbol: "FCFA", rateToUSD: 0.0016 }, // African (Central Africa)
-  { code: "UGX", name: "Ugandan Shilling", symbol: "USh", rateToUSD: 0.00026 }, // African
+  { code: "ZAR", name: "South African Rand", symbol: "R", rateToUSD: 0.053 },
+  { code: "NGN", name: "Nigerian Naira", symbol: "₦", rateToUSD: 0.00067 },
+  { code: "KES", name: "Kenyan Shilling", symbol: "KSh", rateToUSD: 0.0076 },
+  { code: "GHS", name: "Ghanaian Cedi", symbol: "GH₵", rateToUSD: 0.083 },
+  { code: "EGP", name: "Egyptian Pound", symbol: "E£", rateToUSD: 0.021 },
+  { code: "XOF", name: "CFA Franc BCEAO", symbol: "FCFA", rateToUSD: 0.0016 },
+  { code: "XAF", name: "CFA Franc BEAC", symbol: "FCFA", rateToUSD: 0.0016 },
+  { code: "UGX", name: "Ugandan Shilling", symbol: "USh", rateToUSD: 0.00026 },
   {
     code: "TZS",
     name: "Tanzanian Shilling",
     symbol: "TSh",
     rateToUSD: 0.00039,
-  }, // African
+  },
 ];
 
 function FavoritePairs() {
@@ -35,15 +33,11 @@ function FavoritePairs() {
     { id: 2, from: "GBP", to: "USD", rate: 0 },
   ]);
 
-  // Function to find a currency object by its code
-  // Wrapped in useCallback to ensure it's stable across renders
   const getCurrencyByCode = useCallback(
     (code) => currencies.find((c) => c.code === code),
     []
   );
 
-  // Function to calculate the exchange rate between two currencies
-  // Wrapped in useCallback to ensure it's stable across renders
   const calculateRate = useCallback(
     (fromCode, toCode) => {
       const from = getCurrencyByCode(fromCode);
@@ -55,10 +49,8 @@ function FavoritePairs() {
       return 0;
     },
     [getCurrencyByCode]
-  ); // Depends on getCurrencyByCode
+  );
 
-  // Effect to update rates when component mounts or on refresh
-  // Wrapped in useCallback to ensure it's stable across renders
   const updateRates = useCallback(() => {
     setFavoritePairs((prevPairs) =>
       prevPairs.map((pair) => ({
@@ -66,16 +58,15 @@ function FavoritePairs() {
         rate: calculateRate(pair.from, pair.to),
       }))
     );
-  }, [calculateRate]); // Depends on calculateRate
+  }, [calculateRate]);
 
   useEffect(() => {
-    updateRates(); // Initial rate calculation
+    updateRates();
 
-    // Set up interval for automatic updates (e.g., every minute)
-    const interval = setInterval(updateRates, 60 * 1000); // Every 60 seconds
+    const interval = setInterval(updateRates, 60 * 1000);
 
-    return () => clearInterval(interval); // Clean up interval on unmount
-  }, [updateRates]); // Now updateRates is correctly included as a dependency
+    return () => clearInterval(interval);
+  }, [updateRates]);
 
   const handleRemovePair = (id) => {
     setFavoritePairs((prevPairs) => prevPairs.filter((pair) => pair.id !== id));
@@ -89,7 +80,6 @@ function FavoritePairs() {
   return (
     <div className="flex items-center justify-center p-4">
       <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md">
-        {/* Header for Favorite Currency Pairs */}
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-lg font-semibold text-gray-800">
             Favorite Currency Pairs
@@ -116,10 +106,8 @@ function FavoritePairs() {
           </button>
         </div>
 
-        {/* List of Favorite Pairs */}
         <div className="space-y-3 mb-6">
           {favoritePairs.map((pair) => {
-            // Removed 'fromCurrencyObj' as it was unused
             const toCurrencyObj = getCurrencyByCode(pair.to);
             return (
               <div
@@ -179,7 +167,6 @@ function FavoritePairs() {
           })}
         </div>
 
-        {/* Footer Disclaimer */}
         <p className="text-xs text-gray-500 text-center dark:text-gray-400">
           Rates update automatically every minute
         </p>

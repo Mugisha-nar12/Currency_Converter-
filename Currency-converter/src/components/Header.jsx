@@ -1,6 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons"; // Import the right arrow icon
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 function Header() {
   return (

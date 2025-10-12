@@ -9,9 +9,7 @@ const MarketTrend = () => {
     <>
       <div className="min-h-screen bg-gray-100 p-8">
         {" "}
-        {/* Light gray background for the whole page */}
         <div className="container mx-auto">
-          {/* headersection*/}
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-800 mb-2">
               Market Overview

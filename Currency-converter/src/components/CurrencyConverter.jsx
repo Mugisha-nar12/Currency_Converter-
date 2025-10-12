@@ -8,19 +8,17 @@ import {
 function CurrencyConverter({ rates, symbols }) {
   const [amount, setAmount] = useState(1);
   const [fromCurrency, setFromCurrency] = useState("USD");
-  const [toCurrency, setToCurrency] = useState("EUR"); // Changed default to EUR as per the reference image
+  const [toCurrency, setToCurrency] = useState("EUR");
   const [convertedAmount, setConvertedAmount] = useState(0);
 
-  const API_BASE_CURRENCY = "USD"; // Assuming USD is the base currency for your rates
+  const API_BASE_CURRENCY = "USD";
 
-  // Initialize currencies if defaults are not available in symbols (simplified without full error/loading)
   useEffect(() => {
     if (symbols && Object.keys(symbols).length > 0) {
       if (!symbols[fromCurrency]) {
         setFromCurrency(Object.keys(symbols)[0]);
       }
       if (!symbols[toCurrency]) {
-        // Pick a different default if EUR isn't there, ensuring it's not the same as fromCurrency
         const firstSymbol = Object.keys(symbols)[0];
         const secondSymbol =
           Object.keys(symbols).length > 1
@@ -31,11 +29,9 @@ function CurrencyConverter({ rates, symbols }) {
         );
       }
     }
-  }, [symbols, fromCurrency, toCurrency]); // Depend on symbols, from/to currency to re-evaluate defaults
+  }, [symbols, fromCurrency, toCurrency]);
 
-  // Memoized function for conversion calculation
   const calculateConversion = useCallback(() => {
-    // Ensure rates and selected currencies are valid before attempting calculation
     if (!rates || !rates[fromCurrency] || !rates[toCurrency] || amount === 0) {
       setConvertedAmount(0);
       return;
@@ -51,25 +47,20 @@ function CurrencyConverter({ rates, symbols }) {
         ? amountInBaseCurrency
         : amountInBaseCurrency * rates[toCurrency];
 
-    setConvertedAmount(result.toFixed(2)); // Displaying 2 decimal places for currency consistency
+    setConvertedAmount(result.toFixed(2));
   }, [amount, fromCurrency, toCurrency, rates]);
 
-  // Recalculate conversion whenever relevant states change
   useEffect(() => {
     calculateConversion();
   }, [calculateConversion]);
 
-  // Handler for swapping 'From' and 'To' currencies
   const handleSwapCurrencies = () => {
     setFromCurrency(toCurrency);
     setToCurrency(fromCurrency);
   };
 
-  // Sort currency symbols for consistent display in dropdowns
   const sortedSymbols = symbols ? Object.keys(symbols).sort() : [];
 
-  // If symbols are still not available, render a minimal fallback or an empty state
-  // In a real app, this would be covered by a loading state in the parent component
   if (!symbols || sortedSymbols.length === 0) {
     return (
       <div className="bg-white p-6 rounded-xl shadow-lg max-w-md mx-auto my-8 border border-gray-200 text-center text-gray-500">
@@ -90,7 +81,6 @@ function CurrencyConverter({ rates, symbols }) {
         <FontAwesomeIcon icon={faStar} className="text-gray-400 text-lg" />
       </div>
 
-      {/* Amount Input */}
       <div className="mb-4">
         <label
           htmlFor="amount"
@@ -109,7 +99,6 @@ function CurrencyConverter({ rates, symbols }) {
         />
       </div>
 
-      {/* From Currency Selector */}
       <div className="mb-4">
         <label
           htmlFor="fromCurrency"
@@ -131,7 +120,6 @@ function CurrencyConverter({ rates, symbols }) {
               </option>
             ))}
           </select>
-          {/* Custom dropdown arrow */}
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
             <svg
               className="fill-current h-4 w-4"
@@ -144,7 +132,6 @@ function CurrencyConverter({ rates, symbols }) {
         </div>
       </div>
 
-      {/* Swap Currencies Button */}
       <div className="flex justify-center my-6">
         <button
           onClick={handleSwapCurrencies}
@@ -156,7 +143,6 @@ function CurrencyConverter({ rates, symbols }) {
         </button>
       </div>
 
-      {/* To Currency Selector */}
       <div className="mb-6">
         <label
           htmlFor="toCurrency"
@@ -178,7 +164,6 @@ function CurrencyConverter({ rates, symbols }) {
               </option>
             ))}
           </select>
-          {/* Custom dropdown arrow */}
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
             <svg
               className="fill-current h-4 w-4"
@@ -191,7 +176,6 @@ function CurrencyConverter({ rates, symbols }) {
         </div>
       </div>
 
-      {/* Conversion Result Display */}
       <div className="bg-blue-50 p-5 rounded-lg text-center border border-blue-100">
         <p className="text-sm text-gray-600 mb-1">
           {amount} {fromCurrency} equals

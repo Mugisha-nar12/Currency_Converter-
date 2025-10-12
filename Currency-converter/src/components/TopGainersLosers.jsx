@@ -1,7 +1,6 @@
-// src/components/TopGainersLosers.jsx
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChartLine, faChartArea } from "@fortawesome/free-solid-svg-icons"; // Using generic chart icons
+import { faChartLine, faChartArea } from "@fortawesome/free-solid-svg-icons";
 
 function TopGainersLosers() {
   const gainers = [
@@ -20,7 +19,6 @@ function TopGainersLosers() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-      {/* Top Gainers */}
       <div className="bg-white p-6 rounded-lg shadow-md">
         <div className="flex items-center mb-4">
           <FontAwesomeIcon
@@ -44,7 +42,6 @@ function TopGainersLosers() {
         </ul>
       </div>
 
-      {/* Top Losers */}
       <div className="bg-white p-6 rounded-lg shadow-md">
         <div className="flex items-center mb-4">
           <FontAwesomeIcon

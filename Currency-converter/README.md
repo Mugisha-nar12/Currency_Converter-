@@ -1,16 +1,47 @@
-# React + Vite
+# Currency Converter
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a simple currency converter application built with React and Vite. It allows users to convert between different currencies, view live exchange rates, and see the latest market trends.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+* **Currency Conversion:** Convert any amount from one currency to another.
+* **Live Exchange Rates:** Get the latest exchange rates for all major currencies.
+* **Market Trends:** View historical data and charts for currency pairs.
+* **Favorite Pairs:** Save your favorite currency pairs for quick access.
 
-## React Compiler
+## Getting Started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+To get a local copy up and running, follow these simple steps.
 
-## Expanding the ESLint configuration
+### Prerequisites
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* [Node.js](https://nodejs.org/) (v14 or later)
+* [npm](https://www.npmjs.com/)
+
+### Installation
+
+1. Clone the repo
+
+    ```sh
+    git clone https://github.com/Mugisha-nar12/Currency_Converter-.git
+    ```
+
+2. Install NPM packages
+
+    ```sh
+    npm install
+    ```
+
+3. Start the development server
+
+    ```sh
+    npm run dev
+    ```
+
+## Technologies Used
+
+* [React](https://reactjs.org/)
+* [Vite](https://vitejs.dev/)
+* [React Router](https://reactrouter.com/)
+* [Tailwind CSS](https://tailwindcss.com/)
+* [Font Awesome](https://fontawesome.com/)

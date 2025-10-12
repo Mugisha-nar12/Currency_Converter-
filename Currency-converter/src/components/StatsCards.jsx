@@ -1,4 +1,3 @@
-// src/components/StatsCards.jsx
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -32,7 +31,7 @@ function StatsCards() {
       title: "Active Pairs",
       value: "180+",
       change: "Major & Exotic",
-      icon: faEuroSign, // Using Euro sign as a generic currency icon
+      icon: faEuroSign,
       bgColor: "bg-purple-100",
       textColor: "text-purple-700",
       iconColor: "text-purple-500",
@@ -41,7 +40,7 @@ function StatsCards() {
       title: "Volatility Index",
       value: "12.4",
       change: "Moderate",
-      icon: faArrowUp, // Using arrow up as a generic trend icon
+      icon: faArrowUp,
       bgColor: "bg-orange-100",
       textColor: "text-orange-700",
       iconColor: "text-orange-500",

@@ -1,13 +1,13 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faBolt, // For Real-Time Rates (lightning bolt)
-  faChartLine, // For Advanced Analytics (line chart)
-  faStar, // For Smart Favorites (star)
-  faGlobe, // For Global Coverage (globe)
-  faShieldAlt, // For Bank-Grade Security (shield)
-  faClock, // For 24/7 Availability (clock)
-} from "@fortawesome/free-solid-svg-icons"; // Import specific solid icons
+  faBolt,
+  faChartLine,
+  faStar,
+  faGlobe,
+  faShieldAlt,
+  faClock,
+} from "@fortawesome/free-solid-svg-icons";
 
 const features = [
   {
@@ -52,7 +52,6 @@ function WhyChooseUs() {
   return (
     <section className="bg-gray-900 dark:bg-black py-16 px-4 sm:px-6 lg:px-8 text-white">
       <div className="max-w-7xl mx-auto">
-        {/* Section Header */}
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-extrabold text-gray-100 mb-4">
             Why Choose Our Platform?
@@ -63,7 +62,6 @@ function WhyChooseUs() {
           </p>
         </div>
 
-        {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
             <div
@@ -71,12 +69,7 @@ function WhyChooseUs() {
               className="bg-gray-800 dark:bg-gray-800 p-8 rounded-xl shadow-lg flex flex-col items-start text-left transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
             >
               <div className="mb-4 p-3 rounded-lg bg-gray-700 dark:bg-gray-900">
-                {/* Font Awesome Icon */}
-                <span className="text-3xl">
-                  {" "}
-                  {/* Added span for size control */}
-                  {feature.icon}
-                </span>
+                <span className="text-3xl"> {feature.icon}</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-100 mb-2">
                 {feature.title}

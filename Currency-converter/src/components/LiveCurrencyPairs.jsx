@@ -1,5 +1,4 @@
-// src/components/LiveCurrencyPairs.jsx
-import React, { useCallback } from "react"; // Import useCallback
+import React, { useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretUp, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
@@ -12,7 +11,6 @@ function LiveCurrencyPairs({ rates }) {
     { from: "CHF", to: "EUR" },
   ];
 
-  // Wrap getRateAndChange in useCallback to prevent it from changing on every render
   const getRateAndChange = useCallback(
     (from, to) => {
       if (!rates || !rates[from] || !rates[to]) {
@@ -38,7 +36,7 @@ function LiveCurrencyPairs({ rates }) {
       };
     },
     [rates]
-  ); // Dependency for useCallback
+  );
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mb-8">
