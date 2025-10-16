@@ -3,6 +3,7 @@ import App from "./App";
 import { HomePage } from "./pages/HomePage";
 import MarketTrend from "./pages/MarketTrend";
 import NewsAndAnalysisPage from "./pages/NewsAndAnalysisPage";
+import AboutPage from "./pages/AboutPage";
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ export const router = createBrowserRouter([
       {
         path: "/News",
         element: <NewsAndAnalysisPage />,
+      },
+      {
+        path: "/About",
+        element: <AboutPage />,
       },
     ],
   },
