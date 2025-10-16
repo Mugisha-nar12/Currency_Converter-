@@ -28,7 +28,7 @@ function Navbar() {
     { name: "News", href: "/News" },
     { name: "Alerts", href: "#" },
     { name: "Settings", href: "#" },
-    { name: "About", href: "#" },
+    { name: "About", href: "/About" },
   ];
 
   return (
