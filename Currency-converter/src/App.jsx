@@ -5,6 +5,7 @@ import LiveCurrencyPairs from "./components/LiveCurrencyPairs";
 import Footer from "./components/Footer";
 import { fetchLatestRates, fetchCurrencySymbols } from "./api/currencyService";
 import "./index.css";
+import Navbar from "./components/Navbar";
 
 function App() {
   const [latestRates, setLatestRates] = useState(null);
@@ -42,6 +43,7 @@ function App() {
 
   return (
     <div>
+      <Navbar />
       <main>
         <Outlet context={{ latestRates, currencySymbols }} />
       </main>
