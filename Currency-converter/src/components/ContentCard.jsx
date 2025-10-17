@@ -2,7 +2,7 @@ import React from "react";
 import CurrencyConverter from "./CurrencyConverter";
 import LiveCurrencyPairs from "./LiveCurrencyPairs";
 
-const ContentCard = ({ latestRates, currencySymbols }) => {
+const ContentCard = ({ latestRates, currencySymbols, onAddFavorite }) => {
   return (
     <section className="py-12 px-4 bg-gray-200 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -32,7 +32,11 @@ const ContentCard = ({ latestRates, currencySymbols }) => {
           </p>
         </div>
       </div>
-      <CurrencyConverter rates={latestRates} symbols={currencySymbols} />
+      <CurrencyConverter
+        rates={latestRates}
+        symbols={currencySymbols}
+        onAddFavorite={onAddFavorite}
+      />
       <LiveCurrencyPairs rates={latestRates} />
     </section>
   );

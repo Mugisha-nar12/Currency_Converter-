@@ -5,7 +5,7 @@ import {
   faArrowRightArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
 
-function CurrencyConverter({ rates, symbols }) {
+function CurrencyConverter({ rates, symbols, onAddFavorite }) {
   const [amount, setAmount] = useState(1);
   const [fromCurrency, setFromCurrency] = useState("USD");
   const [toCurrency, setToCurrency] = useState("EUR");
@@ -59,6 +59,10 @@ function CurrencyConverter({ rates, symbols }) {
     setToCurrency(fromCurrency);
   };
 
+  const handleAddFavorite = () => {
+    onAddFavorite({ from: fromCurrency, to: toCurrency });
+  };
+
   const sortedSymbols = symbols ? Object.keys(symbols).sort() : [];
 
   if (!symbols || sortedSymbols.length === 0) {
@@ -78,7 +82,12 @@ function CurrencyConverter({ rates, symbols }) {
         <h2 className="text-xl font-semibold text-gray-800">
           Currency Converter
         </h2>
-        <FontAwesomeIcon icon={faStar} className="text-gray-400 text-lg" />
+        <button
+          onClick={handleAddFavorite}
+          className="text-gray-400 hover:text-yellow-400 text-lg"
+        >
+          <FontAwesomeIcon icon={faStar} />
+        </button>
       </div>
 
       <div className="mb-4">

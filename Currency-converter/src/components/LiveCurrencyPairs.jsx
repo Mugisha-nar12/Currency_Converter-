@@ -1,19 +1,67 @@
-import React, { useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretUp, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
-function LiveCurrencyPairs({ rates }) {
-  const displayPairs = [
+const pairCategories = {
+  major: [
     { from: "USD", to: "EUR" },
     { from: "GBP", to: "USD" },
     { from: "USD", to: "JPY" },
     { from: "AUD", to: "USD" },
     { from: "CHF", to: "EUR" },
-  ];
+  ],
+  exotic: [
+    { from: "USD", to: "ZAR" },
+    { from: "EUR", to: "TRY" },
+    { from: "USD", to: "BRL" },
+    { from: "GBP", to: "INR" },
+    { from: "AUD", to: "CNY" },
+  ],
+  african: [
+    { from: "USD", to: "NGN" },
+    { from: "USD", to: "GHS" },
+    { from: "GBP", to: "ZAR" },
+    { from: "USD", to: "EGP" },
+  ],
+  eastAfrican: [
+    { from: "USD", to: "KES" },
+    { from: "USD", to: "UGX" },
+    { from: "USD", to: "TZS" },
+    { from: "USD", to: "RWF" },
+    { from: "USD", to: "BIF" },
+  ],
+};
+
+const API_URL = "https://api.exchangerate-api.com/v4/latest/";
+
+function LiveCurrencyPairs() {
+  const [rates, setRates] = useState({});
+  const [historicalRates, setHistoricalRates] = useState({});
+  const [activeCategory, setActiveCategory] = useState("major");
+
+  const fetchRates = useCallback(async () => {
+    try {
+      const response = await fetch(`${API_URL}USD`);
+      if (!response.ok) throw new Error("Failed to fetch rates");
+      const data = await response.json();
+
+      setHistoricalRates(rates);
+      setRates(data.rates);
+    } catch (error) {
+      console.error("Error fetching rates:", error);
+    }
+  }, [rates]);
+
+  useEffect(() => {
+    fetchRates();
+    // Refresh every 30 seconds
+    const interval = setInterval(fetchRates, 30000);
+    return () => clearInterval(interval);
+  }, [fetchRates]);
 
   const getRateAndChange = useCallback(
     (from, to) => {
-      if (!rates || !rates[from] || !rates[to]) {
+      if (!rates[from] || !rates[to]) {
         return {
           price: "N/A",
           change: "N/A",
@@ -22,20 +70,20 @@ function LiveCurrencyPairs({ rates }) {
         };
       }
 
-      const rate = (1 / rates[from]) * rates[to];
+      const currentRate = rates[to] / rates[from];
+      const previousRate = historicalRates[to] / historicalRates[from];
 
-      const randomChange = Math.random() * 0.01 - 0.005;
-      const changedRate = rate + randomChange;
-      const percentageChange = (randomChange / rate) * 100;
+      const change = currentRate - previousRate;
+      const percentageChange = previousRate ? (change / previousRate) * 100 : 0;
 
       return {
-        price: changedRate.toFixed(4),
-        change: randomChange.toFixed(4),
-        percentage: percentageChange.toFixed(2) + "%",
-        isPositive: randomChange >= 0,
+        price: currentRate.toFixed(4),
+        change: change.toFixed(4),
+        percentage: `${percentageChange.toFixed(2)}%`,
+        isPositive: change >= 0,
       };
     },
-    [rates]
+    [rates, historicalRates]
   );
 
   return (
@@ -44,14 +92,20 @@ function LiveCurrencyPairs({ rates }) {
         <h2 className="text-xl font-semibold text-gray-800">
           Live Currency Pairs
         </h2>
-        <select className="border border-gray-300 rounded-md px-3 py-1 text-gray-700 text-sm">
-          <option>Major Pairs</option>
-          <option>Exotic Pairs</option>
+        <select
+          value={activeCategory}
+          onChange={(e) => setActiveCategory(e.target.value)}
+          className="border border-gray-300 rounded-md px-3 py-1 text-gray-700 text-sm"
+        >
+          <option value="major">Major Pairs</option>
+          <option value="exotic">Exotic Pairs</option>
+          <option value="african">African Pairs</option>
+          <option value="eastAfrican">East African Pairs</option>
         </select>
       </div>
 
       <div className="space-y-4">
-        {displayPairs.map((pair, index) => {
+        {pairCategories[activeCategory].map((pair, index) => {
           const { price, change, percentage, isPositive } = getRateAndChange(
             pair.from,
             pair.to

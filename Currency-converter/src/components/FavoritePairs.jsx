@@ -1,70 +1,97 @@
 import React, { useState, useEffect, useCallback } from "react";
 
 const currencies = [
-  { code: "USD", name: "US Dollar", symbol: "$", rateToUSD: 1 },
-  { code: "EUR", name: "Euro", symbol: "€", rateToUSD: 1.08 },
-  { code: "GBP", name: "British Pound", symbol: "£", rateToUSD: 1.26 },
-  { code: "JPY", name: "Japanese Yen", symbol: "¥", rateToUSD: 0.0067 },
-  { code: "CAD", name: "Canadian Dollar", symbol: "C$", rateToUSD: 0.73 },
-  { code: "AUD", name: "Australian Dollar", symbol: "A$", rateToUSD: 0.66 },
-  { code: "CHF", name: "Swiss Franc", symbol: "CHF", rateToUSD: 1.11 },
-  { code: "CNY", name: "Chinese Yuan", symbol: "¥", rateToUSD: 0.14 },
-  { code: "INR", name: "Indian Rupee", symbol: "₹", rateToUSD: 0.012 },
-  { code: "BRL", name: "Brazilian Real", symbol: "R$", rateToUSD: 0.2 },
-  { code: "ZAR", name: "South African Rand", symbol: "R", rateToUSD: 0.053 },
-  { code: "NGN", name: "Nigerian Naira", symbol: "₦", rateToUSD: 0.00067 },
-  { code: "KES", name: "Kenyan Shilling", symbol: "KSh", rateToUSD: 0.0076 },
-  { code: "GHS", name: "Ghanaian Cedi", symbol: "GH₵", rateToUSD: 0.083 },
-  { code: "EGP", name: "Egyptian Pound", symbol: "E£", rateToUSD: 0.021 },
-  { code: "XOF", name: "CFA Franc BCEAO", symbol: "FCFA", rateToUSD: 0.0016 },
-  { code: "XAF", name: "CFA Franc BEAC", symbol: "FCFA", rateToUSD: 0.0016 },
-  { code: "UGX", name: "Ugandan Shilling", symbol: "USh", rateToUSD: 0.00026 },
-  {
-    code: "TZS",
-    name: "Tanzanian Shilling",
-    symbol: "TSh",
-    rateToUSD: 0.00039,
-  },
+  { code: "USD", name: "US Dollar", symbol: "$" },
+  { code: "EUR", name: "Euro", symbol: "€" },
+  { code: "GBP", name: "British Pound", symbol: "£" },
+  { code: "JPY", name: "Japanese Yen", symbol: "¥" },
+  { code: "CAD", name: "Canadian Dollar", symbol: "C$" },
+  { code: "AUD", name: "Australian Dollar", symbol: "A$" },
+  { code: "CHF", name: "Swiss Franc", symbol: "CHF" },
+  { code: "CNY", name: "Chinese Yuan", symbol: "¥" },
+  { code: "INR", name: "Indian Rupee", symbol: "₹" },
+  { code: "BRL", name: "Brazilian Real", symbol: "R$" },
+  { code: "ZAR", name: "South African Rand", symbol: "R" },
+  { code: "NGN", name: "Nigerian Naira", symbol: "₦" },
+  { code: "KES", name: "Kenyan Shilling", symbol: "KSh" },
+  { code: "GHS", name: "Ghanaian Cedi", symbol: "GH₵" },
+  { code: "EGP", name: "Egyptian Pound", symbol: "E£" },
+  { code: "XOF", name: "CFA Franc BCEAO", symbol: "FCFA" },
+  { code: "XAF", name: "CFA Franc BEAC", symbol: "FCFA" },
+  { code: "UGX", name: "Ugandan Shilling", symbol: "USh" },
+  { code: "TZS", name: "Tanzanian Shilling", symbol: "TSh" },
 ];
 
-function FavoritePairs() {
+const API_URL = "https://api.exchangerate-api.com/v4/latest/";
+
+function FavoritePairs({ newFavorite }) {
   const [favoritePairs, setFavoritePairs] = useState([
     { id: 1, from: "USD", to: "EUR", rate: 0 },
     { id: 2, from: "GBP", to: "USD", rate: 0 },
   ]);
+  const [ratesCache, setRatesCache] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  useEffect(() => {
+    if (newFavorite) {
+      setFavoritePairs((prevPairs) => [
+        ...prevPairs,
+        { ...newFavorite, id: Date.now() },
+      ]);
+    }
+  }, [newFavorite]);
 
   const getCurrencyByCode = useCallback(
     (code) => currencies.find((c) => c.code === code),
     []
   );
 
-  const calculateRate = useCallback(
-    (fromCode, toCode) => {
-      const from = getCurrencyByCode(fromCode);
-      const to = getCurrencyByCode(toCode);
-
-      if (from && to && from.rateToUSD !== 0) {
-        return (1 * from.rateToUSD) / to.rateToUSD;
+  const fetchRates = useCallback(async (baseCurrency) => {
+    try {
+      const response = await fetch(`${API_URL}${baseCurrency}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch rates");
       }
-      return 0;
-    },
-    [getCurrencyByCode]
-  );
+      const data = await response.json();
+      setRatesCache((prevCache) => ({
+        ...prevCache,
+        [baseCurrency]: data.rates,
+      }));
+      return data.rates;
+    } catch (error) {
+      console.error("Error fetching rates:", error);
+      return null;
+    }
+  }, []);
 
-  const updateRates = useCallback(() => {
+  const updateRates = useCallback(async () => {
+    setIsRefreshing(true);
+    const allRates = { ...ratesCache };
+
+    for (const pair of favoritePairs) {
+      if (!allRates[pair.from]) {
+        const rates = await fetchRates(pair.from);
+        if (rates) {
+          allRates[pair.from] = rates;
+        }
+      }
+    }
+
     setFavoritePairs((prevPairs) =>
-      prevPairs.map((pair) => ({
-        ...pair,
-        rate: calculateRate(pair.from, pair.to),
-      }))
+      prevPairs.map((pair) => {
+        const rate = allRates[pair.from] ? allRates[pair.from][pair.to] : 0;
+        return { ...pair, rate: rate || 0 };
+      })
     );
-  }, [calculateRate]);
+
+    setIsLoading(false);
+    setIsRefreshing(false);
+  }, [favoritePairs, fetchRates, ratesCache]);
 
   useEffect(() => {
     updateRates();
-
     const interval = setInterval(updateRates, 60 * 1000);
-
     return () => clearInterval(interval);
   }, [updateRates]);
 
@@ -73,9 +100,19 @@ function FavoritePairs() {
   };
 
   const handleRefreshAll = () => {
-    updateRates();
     console.log("Rates refreshed!");
+    updateRates();
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center p-4">
+        <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md text-center">
+          <p className="text-gray-800">Loading favorite pairs...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex items-center justify-center p-4">
@@ -88,10 +125,11 @@ function FavoritePairs() {
             onClick={handleRefreshAll}
             className="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100"
             aria-label="Refresh rates"
+            disabled={isRefreshing}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
+              className={`h-5 w-5 ${isRefreshing ? "animate-spin" : ""}`}
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
