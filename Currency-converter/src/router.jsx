@@ -4,6 +4,7 @@ import { HomePage } from "./pages/HomePage";
 import MarketTrend from "./pages/MarketTrend";
 import NewsAndAnalysisPage from "./pages/NewsAndAnalysisPage";
 import AboutPage from "./pages/AboutPage";
+import Settings from "./pages/SettingPage";
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
       {
         path: "/About",
         element: <AboutPage />,
+      },
+      {
+        path: "/settings",
+        element: <Settings />,
       },
     ],
   },
