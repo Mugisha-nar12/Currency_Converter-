@@ -27,7 +27,7 @@ function Navbar() {
     { name: "Market", href: "/market" },
     { name: "News", href: "/News" },
     { name: "Alerts", href: "#" },
-    { name: "Settings", href: "#" },
+    { name: "Settings", href: "/settings" },
     { name: "About", href: "/About" },
   ];
 
