@@ -78,12 +78,14 @@ function FavoritePairs({ newFavorite }) {
       }
     }
 
-    setFavoritePairs((prevPairs) =>
-      prevPairs.map((pair) => {
-        const rate = allRates[pair.from] ? allRates[pair.from][pair.to] : 0;
-        return { ...pair, rate: rate || 0 };
-      })
-    );
+    const updatedPairs = favoritePairs.map((pair) => {
+      const rate = allRates[pair.from] ? allRates[pair.from][pair.to] : 0;
+      return { ...pair, rate: rate || 0 };
+    });
+
+    if (JSON.stringify(favoritePairs) !== JSON.stringify(updatedPairs)) {
+      setFavoritePairs(updatedPairs);
+    }
 
     setIsLoading(false);
     setIsRefreshing(false);
